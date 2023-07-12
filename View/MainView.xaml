@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="ATM_TestTask.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ATM_TestTask"
+             mc:Ignorable="d" 
+             d:DesignHeight="432" d:DesignWidth="820">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition/>
+            <RowDefinition Height="0.15*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" FontSize="40" Text="Какой-то банк" TextAlignment="Center" VerticalAlignment="Center"/>
+        <GroupBox Header="Преимущества сотрудничества с нами" Grid.Row="1">
+            <WrapPanel Orientation="Vertical">
+                <TextBlock FontSize="16" Text="КЭШБЕК НА ГРЕЧКУ"/>
+                <TextBlock FontSize="16" Text="Скидки у партнеров"/>
+                <TextBlock FontSize="16" Text="Эксклюзивные предложения"/>
+                <TextBlock FontSize="16" Text="и многое другое..."/>
+            </WrapPanel>
+        </GroupBox>
+        <TextBlock Margin="0,0,5,5" VerticalAlignment="Bottom" FontSize="24" Grid.Row="2" TextAlignment="Right" Text="✆ 8-800-555-35-35"/>
+    </Grid>
+</UserControl>

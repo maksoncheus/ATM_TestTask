@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="ATM_TestTask.PushView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ATM_TestTask"
+             mc:Ignorable="d" 
+             d:DesignHeight="432" d:DesignWidth="820">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="VisibleIfTrueConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+        <TextBox Visibility="{Binding IsNotUserInputed, Converter={StaticResource VisibleIfTrueConverter}}" Text="{Binding UserInput}" IsReadOnly="True" />
+        <ItemsControl Visibility="{Binding IsUserInputed, Converter={StaticResource VisibleIfTrueConverter}}" ItemsSource="{Binding BanknotesToOperate}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="15" BorderBrush="Black" BorderThickness="1">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.33*"/>
+                                <ColumnDefinition Width="0.33*"/>
+                                <ColumnDefinition Width="0.33*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.ColumnSpan="3" Text="{Binding Path=Currency}" TextAlignment="Center" FontSize="24"/>
+                            <Button MinWidth="25" MinHeight="25" IsEnabled="{Binding Path=Count}" Grid.Row="1" Content="-" CommandParameter="{Binding}" Command="{Binding Path=DataContext.DecreaseCommand, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ItemsControl}}}"/>
+                            <TextBlock TextAlignment="Center" VerticalAlignment="Center" FontSize="16" Grid.Column="1" Grid.Row="1">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat=' {0}/{1} '>
+                                        <Binding Path="Count"/>
+                                        <Binding Path="CountDiff"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <Button MinWidth="25" MinHeight="25" IsEnabled="{Binding Path=CanOperate}" Grid.Row="1" Grid.Column="2" Content="+" CommandParameter="{Binding}" Command="{Binding Path=DataContext.IncreaseCommand, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ItemsControl}}}"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Margin="15" Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        <TextBlock Visibility="{Binding IsUserInputed, Converter={StaticResource VisibleIfTrueConverter}}" TextAlignment="Center" VerticalAlignment="Center" FontSize="24" Grid.Row="1">\
+            <TextBlock.Text>
+                <MultiBinding StringFormat="Вы внесли {0}/{1} рублей">
+                    <Binding Path="CurrentSum"/>
+                    <Binding Path="OverallSum"/>
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+        <TextBlock TextWrapping="Wrap" Visibility="{Binding IsNotUserInputed, Converter={StaticResource VisibleIfTrueConverter}}" TextAlignment="Center" Grid.Row="1" FontSize="24" VerticalAlignment="Center" Text="Введите сумму (меньше миллиона), которую хотите внести с помощью кнопок:" />
+    </Grid>
+</UserControl>
