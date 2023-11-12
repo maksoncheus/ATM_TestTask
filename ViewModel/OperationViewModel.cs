@@ -18,7 +18,7 @@ namespace ATM_TestTask
         private int _currentSum;
         private int _overallSum;
         private string _userInput;
-        private ICommand _increaseCommand;
+        private  ICommand _increaseCommand;
         private ICommand _decreaseCommand;
         private ObservableCollection<Banknote> banknotesToOperate;
         public ObservableCollection<Banknote> BanknotesToOperate { get { return banknotesToOperate; } set { banknotesToOperate = value; OnPropertyChanged(nameof(BanknotesToOperate)); } }
@@ -46,14 +46,14 @@ namespace ATM_TestTask
         protected OperationViewModel()
         {
             UserInput = "";
-            Atm = ATM.GetInstance(500);
+            Atm = ATM.GetInstance(50);
             BanknotesToOperate = new ObservableCollection<Banknote>();
             Banknote.AllPossibleCurrencies.ForEach(note => BanknotesToOperate.Add(new Banknote(note)));
             CanApply = true;
             CanAbort = true;
         }
 
-        public ICommand IncreaseCommand
+        public virtual ICommand IncreaseCommand
         {
             get
             {
@@ -68,7 +68,7 @@ namespace ATM_TestTask
                 return _increaseCommand;
             }
         }
-        public ICommand DecreaseCommand
+        public virtual ICommand DecreaseCommand
         {
             get
             {

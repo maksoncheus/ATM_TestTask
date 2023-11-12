@@ -12,11 +12,10 @@ namespace ATM_TestTask
         private List<Banknote> _bankNotes;
         private int _overAllCash;
         public List<Banknote> Banknotes { get { return _bankNotes; } set { _bankNotes = value; OnPropertyChanged(nameof(Banknotes)); } }
-        public int MaxBanknotes { get; set; } //Максимальное количество купюр одного номинала.
+        public int MaxBanknotes { get; set; } 
         public int OverAllCash { get { return _overAllCash; } set { _overAllCash = value; OnPropertyChanged(nameof(OverAllCash)); } }
         protected ATM(int maxBanknotes)
         {
-            //Не указано, что нужно хранить состояние, поэтому хардкод
             Banknotes = new();
             Banknote.AllPossibleCurrencies.ForEach(note => Banknotes.Add(new Banknote(note,maxBanknotes/2)));
             MaxBanknotes = maxBanknotes;

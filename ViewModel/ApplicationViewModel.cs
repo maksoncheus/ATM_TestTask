@@ -73,8 +73,8 @@ namespace ATM_TestTask
                         if (CurrentPageViewModel.CanApply)
                     {
                         CurrentPageViewModel.PerformOperation();
-                        MessageBox.Show("Вы " + CurrentPageViewModel.operation switch { Operation.Push => "внесли", Operation.Pull => "сняли" } + $" {CurrentPageViewModel.OverallSum} рублей");
                         Atm.RecalculateCash();
+                        MessageBox.Show("Вы " + CurrentPageViewModel.operation switch { Operation.Push => "внесли", Operation.Pull => "сняли" } + $" {CurrentPageViewModel.CurrentSum} рублей");
                         ChangeToMain?.Execute(null);
                     }
                 });

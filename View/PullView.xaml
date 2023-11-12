@@ -8,14 +8,64 @@
              d:DesignHeight="432" d:DesignWidth="820">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="VisibleIfTrueConverter" />
+        <local:MultiCommandConverter x:Key="multiCommandConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="0.2*"/>
         </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.15*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.4*"/>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.4*"/>
+            </Grid.RowDefinitions>
+            <Grid.Triggers>
+                <EventTrigger SourceName="YesPullButton" RoutedEvent="Button.Click">
+                    <EventTrigger.Actions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Duration="0" BeginTime="0" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Hidden}"/>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Duration="0" BeginTime="0" Storyboard.TargetName="BanknotesItemsControl" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                    <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Duration="0" BeginTime="0" Storyboard.TargetName="ChoosenTextBlock" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                    <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}"/>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Grid.Triggers>
+            <TextBlock Text="Вы хотите самостоятельно указать, какие купюры получить?" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="3" FontSize="24"/>
+            <Button x:Name="YesPullButton" Grid.Column="0" Grid.Row="1" Width="75" Height="50">Да</Button>
+            <Button x:Name="NoPullButton" Grid.Column="2" Grid.Row="1" Width="75" Height="50" Content="Нет">
+                <Button.Command>
+                    <MultiBinding Converter="{StaticResource multiCommandConverter}" >
+                        <Binding Path="GetCashAuto"/>
+                        <Binding Path="DataContext.ApplyUserInput" RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType={x:Type Window}}"/>
+                    </MultiBinding>
+                </Button.Command>
+            </Button>
+        </Grid>
         <TextBox Visibility="{Binding IsNotUserInputed, Converter={StaticResource VisibleIfTrueConverter}}" Text="{Binding UserInput}" IsReadOnly="True" />
-        <ItemsControl Visibility="{Binding IsUserInputed, Converter={StaticResource VisibleIfTrueConverter}}" ItemsSource="{Binding BanknotesToOperate}">
+        <ItemsControl x:Name="BanknotesItemsControl" Visibility="Hidden" ItemsSource="{Binding BanknotesToOperate}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Border Margin="15" BorderBrush="Black" BorderThickness="1">
@@ -50,7 +100,7 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <TextBlock Visibility="{Binding IsUserInputed, Converter={StaticResource VisibleIfTrueConverter}}" TextAlignment="Center" VerticalAlignment="Center" FontSize="24" Grid.Row="1">\
+        <TextBlock x:Name="ChoosenTextBlock" Visibility="Hidden" TextAlignment="Center" VerticalAlignment="Center" FontSize="24" Grid.Row="1">\
             <TextBlock.Text>
                 <MultiBinding StringFormat="Вы выбрали {0}/{1}">
                     <Binding Path="CurrentSum"/>
